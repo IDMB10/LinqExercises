@@ -44,7 +44,11 @@ public static class Program {
 
         //Console.WriteLine($"Promedio caracteres titulo de los libros : {query.PromedioCaracteresTitulosLibros()}");
 
-        ImprimirGrupo(query.LibroPublicadosDesde2000AgrupadosPorAnio());
+        //ImprimirGrupo(query.LibroPublicadosDesde2000AgrupadosPorAnio());
+
+        //ImprimirDicccionario(query.DiccionarioLetraConLaQueEmpiezaLibro(), 'P');
+
+        ImprimirValores(query.Book500PagesAndPublished2005());
     }
     public static void ImprimirValores(IEnumerable<Book> Listalibros) {
         Console.WriteLine("{0,-60} {1,15} {2,15}\n", "Titulo", "N. Paginas", "Fecha Publicación");
@@ -62,6 +66,13 @@ public static class Program {
             foreach (var item in grupo) {
                 Console.WriteLine("{0,-60} {1, 15} {2, 15}", item.Title, item.PageCount, item.PublishedDate.Date.ToShortDateString());
             }
+        }
+    }
+
+    public static void ImprimirDicccionario(ILookup<char, Book> bookList, char letter) {
+        Console.WriteLine("{0,-60} {1, 15} {2, 15}\n", "Titulo", "N. Paginas", "Fecha publicacion");
+        foreach (var item in bookList[letter]) {
+            Console.WriteLine("{0,-60} {1, 15} {2, 15}", item.Title, item.PageCount, item.PublishedDate.Date.ToShortDateString());
         }
     }
 }

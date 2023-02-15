@@ -153,5 +153,24 @@ namespace Linq {
             //Query Expression
             return from l in _librosCollection where l.PublishedDate.Year > 2000 group l by l.PublishedDate.Year;
         }
+
+        public ILookup<char, Book> DiccionarioLetraConLaQueEmpiezaLibro() {
+            return _librosCollection.ToLookup(l => l.Title[0], l => l);
+        }
+
+        public IEnumerable<Book> Book500PagesAndPublished2005() {
+            //Extension Method
+            var librosMayor2005 = _librosCollection.Where(l => l.PublishedDate.Year > 2005);
+            var librosMayor500Pages = _librosCollection.Where(l => l.PageCount > 500);
+            //Otra Coleccion a hacer join, elemento a comparar lista1, elementos a comparar lista2, que se quiere retornar del join
+            return librosMayor2005.Join(librosMayor500Pages, l => l.Title, p => p.Title, (l, p) => l);
+
+            //Query Expression
+            return from l in _librosCollection
+                   where l.PublishedDate.Year > 2005
+                   join l2 in _librosCollection on l.Title equals l2.Title
+                   where l2.PageCount > 500
+                   select l;
+        }
     }
 }
