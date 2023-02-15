@@ -38,13 +38,30 @@ public static class Program {
         // var libroFechaMasReciente = query.LibroConFechaPublicacioMasReciente();
         // Console.WriteLine($"Libro Fecha de publicación mas reciente {libroFechaMasReciente.Title} - {libroFechaMasReciente.PageCount} - {libroFechaMasReciente.PublishedDate}");
 
-        Console.WriteLine($"Suma paginas libros con paginas entre 0  y 500: {query.SumaPaginasLibros()}");
+        //Console.WriteLine($"Suma paginas libros con paginas entre 0  y 500: {query.SumaPaginasLibros()}");
+
+        //Console.WriteLine($"Titulos libros publicados despues del 2015 {query.TitulosLibrosFechaPosterior2015()}");
+
+        //Console.WriteLine($"Promedio caracteres titulo de los libros : {query.PromedioCaracteresTitulosLibros()}");
+
+        ImprimirGrupo(query.LibroPublicadosDesde2000AgrupadosPorAnio());
     }
     public static void ImprimirValores(IEnumerable<Book> Listalibros) {
         Console.WriteLine("{0,-60} {1,15} {2,15}\n", "Titulo", "N. Paginas", "Fecha Publicación");
 
         foreach (var item in Listalibros) {
             Console.WriteLine("{0,-60} {1,15} {2,15}", item.Title, item.PageCount, item.PublishedDate.ToShortDateString());
+        }
+    }
+
+    public static void ImprimirGrupo(IEnumerable<IGrouping<int, Book>> ListadeLibros) {
+        foreach (var grupo in ListadeLibros) {
+            Console.WriteLine("");
+            Console.WriteLine($"Grupo: {grupo.Key}");
+            Console.WriteLine("{0,-60} {1, 15} {2, 15}\n", "Titulo", "N. Paginas", "Fecha publicacion");
+            foreach (var item in grupo) {
+                Console.WriteLine("{0,-60} {1, 15} {2, 15}", item.Title, item.PageCount, item.PublishedDate.Date.ToShortDateString());
+            }
         }
     }
 }

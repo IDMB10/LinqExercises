@@ -99,7 +99,7 @@ namespace Linq {
             return (from l in _librosCollection select new Book() { Title = l.Title, PageCount = l.PageCount }).Take(3);
         }
 
-        //Operadores de agreacion
+        //Operadores de agregacion
         public int NumBooksBetween200And500() {
             //Extension Method
             //return _librosCollection.Where(l => l.PageCount < 500 && l.PageCount > 200).Count();
@@ -128,6 +128,30 @@ namespace Linq {
 
         public int? SumaPaginasLibros() {
             return _librosCollection.Where(l => l.PageCount >= 0 && l.PageCount <= 500).Sum(l => l.PageCount);
+        }
+
+        public string TitulosLibrosFechaPosterior2015() {
+            return _librosCollection.Where(l => l.PublishedDate.Year > 2015).Aggregate("", (TitulosLibros, next) => {
+                if (!string.IsNullOrEmpty(TitulosLibros)) {
+                    TitulosLibros += " - " + next.Title;
+                } else {
+                    TitulosLibros += next.Title;
+                }
+                return TitulosLibros;
+            });
+        }
+
+        public double PromedioCaracteresTitulosLibros() {
+            return _librosCollection.Average(l => l.Title.Length);
+        }
+
+        //Clausulas de agrupamiento
+        public IEnumerable<IGrouping<int, Book>> LibroPublicadosDesde2000AgrupadosPorAnio() {
+            //Extension Method
+            //return _librosCollection.Where(l => l.PublishedDate.Year > 2000).GroupBy(l => l.PublishedDate.Year);
+
+            //Query Expression
+            return from l in _librosCollection where l.PublishedDate.Year > 2000 group l by l.PublishedDate.Year;
         }
     }
 }
